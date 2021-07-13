@@ -83,12 +83,10 @@ contract Deal is ERC721 {
         users[_user] = _userID;
     }
 
-    function createOffer(offer memory _offer, string memory _description, uint _amount) public onlyRegisteredIssuers virtual returns(uint){
+    function createOffer(offer memory _offer) public onlyRegisteredIssuers virtual returns(uint){
         uint currentID = _tokenId.current();
         _offer.id = currentID;
         _offer.issuer = msg.sender;
-        _offer.description = _description;
-        _offer.amount = _amount;
 
         _safeMint(msg.sender, currentID);
         _tokenId.increment();
