@@ -19,7 +19,7 @@ contract Ownable is AccessControl {
 contract DealChain is Ownable, ERC20 {
     constructor() ERC20("DealChain", "DCN") {}
 
-    function mint(address to, uint amount) public virtual {
+    function mint(address to, uint256 amount) public virtual {
         require(hasRole(creator, _msgSender()), "Must have minter role");
         _mint(to, amount);
     }
@@ -32,26 +32,26 @@ contract Deal is ERC721 {
     Counters.Counter private _tokenId;
     ERC20 private _currency;
 
-    event userRegistered(address indexed user, uint timestamp, uint id);
+    event userRegistered(address indexed user, uint256 timestamp, uint256 id);
     event issuerRegistered(address indexed issuer);
-    event offerCreated(address indexed issuer, uint tokenID, uint timestamp, string description, uint amount);
-    event offerRevoked(address indexed issuer, uint tokenID, string description);
+    event offerCreated(address indexed issuer, uint256 tokenID, uint256 timestamp, string description, uint256 amount);
+    event offerRevoked(address indexed issuer, uint256 tokenID, string description);
 
     mapping(address => bool) issuers;
-    mapping(address => uint) users;
+    mapping(address => uint256) users;
 
     struct offer {
         address issuer;
-        uint id;
-        uint timestamp;
-        uint expireDate;
-        uint amount;
-        uint priceInDCN;
+        uint256 id;
+        uint256 timestamp;
+        uint256 expireDate;
+        uint256 amount;
+        uint256 priceInDCN;
         string description;
     }
 
-    mapping(address => mapping(uint => uint)) internal holders;
-    mapping (uint => offer) internal offers;
+    mapping(address => mapping(uint256 => uint256)) internal holders;
+    mapping (uint256 => offer) internal offers;
     uint[] public offerList;
 
     constructor() ERC721("DealChainCoupon", "DCNC") public {
@@ -73,9 +73,9 @@ contract Deal is ERC721 {
         _;
     }
 
-    function registerPPABuyer(address _user) public {
-        uint _userID = 0;
-        uint _timestamp = block.timestamp;
+    function registerUser(address _user) public {
+        uint256 _userID = 0;
+        uint256 _timestamp = block.timestamp;
         _userID++;
         if(_userID != 0) {
             emit userRegistered(_user, _timestamp, _userID);
@@ -83,8 +83,8 @@ contract Deal is ERC721 {
         users[_user] = _userID;
     }
 
-    function createOffer(offer memory _offer) public onlyRegisteredIssuers virtual returns(uint){
-        uint currentID = _tokenId.current();
+    function createOffer(offer memory _offer) public onlyRegisteredIssuers virtual returns(uint256){
+        uint256 currentID = _tokenId.current();
         _offer.id = currentID;
         _offer.issuer = msg.sender;
 
@@ -97,9 +97,9 @@ contract Deal is ERC721 {
         return currentID;
     }
 
-    function purchaseOffer(uint offerID) external payable {
+    function purchaseOffer(uint256 offerID) external payable {
         offer storage _offer = offers[offerID];
-        uint _amount = 1;
+        uint256 _amount = 1;
         require(_offer.id > 0, "Non existence offer");
         require(_offer.amount > 0, "Out of stock");
         require(_amount > _offer.amount, "Not enough offers");
