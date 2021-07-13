@@ -1,0 +1,19 @@
+{
+  "name": "dealsmartcontract",
+  "version": "1.0.0",
+  "description": "This is a basic marketplace deal type smart contract",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CH-Roumeliotis",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^2.4.3"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@openzeppelin/contracts": "^4.2.0",
+    "ts-generator": "^0.1.1"
+  }
+}
